@@ -1,0 +1,36 @@
+version: '3'
+services:
+  homer:
+    image: b4bz/homer
+    container_name: homer
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/meraki/homer/data:/www/assets
+      - /home/meraki/homer/data/icons:/www/assets/icons
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homer.rule=Host(`dashboard.${DOMAIN}`)"
+      - "traefik.http.routers.homer.entrypoints=http"
+      - "traefik.http.routers.homer-secure.entrypoints=https"
+      - "traefik.http.services.homer.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.homer-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.homer.middlewares=homer-https-redirect"
+      # - "traefik.http.routers.homer.middlewares=homer-auth"
+      - "traefik.http.routers.homer-secure.service=homer"
+      - "traefik.http.routers.homer-secure.rule=Host(`dashboard.${DOMAIN}`)"
+      - "traefik.http.routers.homer-secure.tls=true"
+      - "traefik.http.middlewares.homer-auth.basicauth.users=admin:{SHA}${DASHBOARD_PASSWORD}"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.homer-secure.middlewares=authelia@docker"
+    environment:
+      - INIT_ASSETS=0
+      - USER=meraki
+      -GROUP=meraki
+    restart: unless-stopped
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
