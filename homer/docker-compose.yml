@@ -7,8 +7,8 @@ services:
       - no-new-privileges:true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /home/meraki/homer/data:/www/assets
-      - /home/meraki/homer/data/icons:/www/assets/icons
+      - ./data:/www/assets
+      - ./data/icons:/www/assets/icons
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homer.rule=Host(`dashboard.${DOMAIN}`)"
@@ -26,8 +26,8 @@ services:
       - "traefik.http.routers.homer-secure.middlewares=authelia@docker"
     environment:
       - INIT_ASSETS=0
-      - USER=meraki
-      -GROUP=meraki
+      - USER="${USER}"
+      - GROUP="${GROUP}"
     restart: unless-stopped
     networks:
       - proxy
