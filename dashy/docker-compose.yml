@@ -13,25 +13,22 @@ services:
       - proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /home/meraki/dashy/dashy_conf.yml:/app/public/conf.yml
+      - ./dashy_conf.yml:/app/public/conf.yml
       # - /path/to/item-icons:/app/public/item-icons
-    ports:
-      - 4000:80
     labels:
-      - "traefik.enable=false"
-      - "traefik.http.middlewares.testheader.headers.accesscontrolalloworiginlist=https://dashboard.prometheontechnologies.com"
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      # Define the URL to access this app
+      - "traefik.http.routers.dashy.rule=Host(`${SUB_DOMAIN}.${DOMAIN}`)"
       - "traefik.http.routers.dashy.entrypoints=http"
-      - "traefik.http.routers.dashy.rule=Host(`dashboard.prometheonechnologies.com`)"
+      - "traefik.http.services.dashy.loadbalancer.server.port=4000"
+      # TLS is used to protect the domain
+      - "traefik.http.routers.dashy-secure.entrypoints=https"
       - "traefik.http.middlewares.dashy-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.dashy.middlewares=dashy-https-redirect"
-      - "traefik.http.routers.dashy-secure.entrypoints=https"
-      - "traefik.http.routers.dashy-secure.rule=Host(`dashboard.prometheontechnologies.com`)"
-      - "traefik.http.routers.dashy-secure.tls=true"
       - "traefik.http.routers.dashy-secure.service=dashy"
-      - "traefik.http.services.dashy.loadbalancer.server.port=3001"
-      - "traefik.docker.network=proxy"
-    expose:
-      - 4000
+      - "traefik.http.routers.dashy-secure.rule=Host(`${SUB_DOMAIN}.${DOMAIN}`)"
+      - "traefik.http.routers.dashy-secure.tls=true"
 networks:
   proxy:
     external: true

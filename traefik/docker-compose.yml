@@ -22,32 +22,12 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./data/traefik.yml:/traefik.yml:ro
       - ./data/acme.json:/acme.json
-      - ./config.yml:/config.yml:ro
+      - ./data/config.yml:/config.yml:ro
     labels:
-    #  - "traefik.enable=true"
-      # Dashboard
-    #  - "traefik.http.routers.traefik.rule=Host(`server.${DOMAIN}`)"
-    #  - "traefik.http.routers.traefik.service=api@internal"
-    #  - "traefik.http.routers.traefik.entrypoints=websecure"
-    #  - "traefik.http.routers.traefik.middlewares=dashboardauth"
-    #  - "traefik.http.middlewares.dashboardauth.basicauth.users=admin:{SHA}${DASHBOARD_PASSWORD}"
-      # Global redirection: http to https
-    #  - "traefik.http.routers.http-catchall.rule=HostRegexp(`{host:(www.)?.+}`)"
-    #  - "traefik.http.routers.http-catchall.entrypoints=web"
-    #  - "traefik.http.routers.http-catchall.middlewares=wwwtohttps"
-      # Global redirection: https (www.) to https
-    #  - "traefik.http.routers.wwwsecure-catchall.rule=HostRegexp(`{host:(www.).+}`)"
-    #  - "traefik.http.routers.wwwsecure-catchall.entrypoints=websecure"
-    #  - "traefik.http.routers.wwwsecure-catchall.tls=true"
-    #  - "traefik.http.routers.wwwsecure-catchall.middlewares=wwwtohttps"
-      # middleware: http(s)://(www.) to  https://
-    #  - "traefik.http.middlewares.wwwtohttps.redirectregex.regex=^https?://(?:www.)?(.+)"
-    #  - "traefik.http.middlewares.wwwtohttps.redirectregex.replacement=https://$${1}"
-    #  - "traefik.http.middlewares.wwwtohttps.redirectregex.permanent=true"
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=http"
       - "traefik.http.routers.traefik.rule=Host(`server.${DOMAIN}`)"
-      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$apr1$$2GHKP2OM$$lITgjBPTpsTphIk/KQDOe."
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=${DASHBOARD_USER}:${DASHBOARD_PASSWORD}"
       - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
       - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
@@ -59,8 +39,6 @@ services:
       - "traefik.http.routers.traefik-secure.tls.domains[0].main=${DOMAIN}"
       - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.${DOMAIN}"
       - "traefik.http.routers.traefik-secure.service=api@internal"
-      - "traefik.http.routers.traefik-secure.middlewares=auth@file"
-      #traefik.http.routers.traefik-secure.middlewares: auth@file
 networks:
   proxy:
     external: true

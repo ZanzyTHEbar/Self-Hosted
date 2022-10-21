@@ -1,3 +1,4 @@
+
 api:
   dashboard: true
   debug: true
@@ -14,6 +15,7 @@ providers:
     exposedByDefault: false
   file:
     filename: /config.yml
+    watch: true
 certificatesResolvers:
   cloudflare:
     acme:
@@ -25,3 +27,5 @@ certificatesResolvers:
         resolvers:
           - "1.1.1.1:53"
           - "1.0.0.1:53"
+global:
+  sendAnonymousUsage: false

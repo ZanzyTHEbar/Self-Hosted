@@ -1,2 +1,3 @@
 portainer/data
-.env
+*.env
+database
