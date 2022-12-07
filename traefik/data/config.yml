@@ -1,12 +1,11 @@
 http:
- #region routers 
+ #region routers
   routers:
     proxmox:
       entryPoints:
         - "https"
       rule: "Host(`proxmox.prometheontechnologies.com`)"
       middlewares:
-#        - auth
         - frame-deny
         - default-headers
         - https-redirectscheme
@@ -216,11 +215,11 @@ http:
     #    passHostHeader: true
 #endregion
   middlewares:
-    auth:
-      forwardauth:
-        address: "https://auth.prometheontechnologis.com:4181"
-        trustForwardHeader: true
-        authResponseHeaders: "X-Forwarded-User"
+    #forward-auth:
+    #  forwardauth:
+    #    address: "https://auth.prometheontechnologis.com:4181"
+    #    trustForwardHeader: true
+    #    authResponseHeaders: "X-Forwarded-User"
     addprefix-pihole:
       addPrefix:
         prefix: "/admin"
