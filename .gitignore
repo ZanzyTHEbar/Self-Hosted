@@ -1,3 +1,4 @@
 portainer/data
 *.env
 database
+/mykuma/uptime-kuma-data
