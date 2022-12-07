@@ -1,0 +1,113 @@
+Server Setup
+
+Infrastructure as Code (IaC) - Ansible!!!  https://github.com/notthebee/infra
+
+https://github.com/notthebee/ansible-role-ubuntu_autoinstall
+https://www.ansiblefordevops.com/
+https://www.youtube.com/watch?v=goclfp6a2IQ&list=PL2_OBreMn7FqZkvMYt6ATmgC0KAGGJNAN&index=2
+
+https://www.youtube.com/watch?v=ZsjK4VDopiE
+
+Hardware:
+
+14TB storage
+16 Core 32 thread CPU
+~1TB cache disk
+
+
+Software:
+
+ProxMox:
+	https://tteck.github.io/Proxmox/ - run this first after install
+	Graphite Server:
+	Windows Server 2022 with Hyper-V Role - https://learn.microsoft.com/en-us/virtualization/windowscontainers/about/
+	https://www.youtube.com/watch?v=sabcJ1u1e-M
+	
+		-> WSL2
+		-> Docker
+		-> VSCode + Remote Container Plugin
+		->
+	Azure AD Sync AD DC VM - Active Directory - https://www.youtube.com/watch?v=Bm3mihQNGI4
+	https://learn.microsoft.com/en-us/troubleshoot/windows-server/identity/ad-dc-in-virtual-hosting-environment
+	https://www.google.com/search?q=AD+DC+VM&rlz=1C1QPHC_nlBE957BE957&oq=AD+DC+VM&aqs=chrome..69i57.488j0j4&sourceid=chrome&ie=UTF-8
+	NetConf
+	SNMP
+	LDAP
+	
+	Ubuntu Server:
+		Ansible!!!
+		Dashy - docker container (Doesn't currently work with Traefik - went with Homer isntead)
+		
+			Services:
+				MergerFS
+				SnapRAID
+				Next Cloud: https://hub.docker.com/_/nextcloud
+				https://i.imgur.com/4Pp7dRg.jpg
+				iCSI
+				Photoprism: https://hub.docker.com/r/photoprism/photoprism
+				Bitwarden: https://github.com/dani-garcia/vaultwarden
+				Transmission
+				
+			System:
+				Jackett: https://hub.docker.com/r/linuxserver/jackett
+				PiKVM: https://github.com/pikvm/pikvm
+				PiHole: https://github.com/chriscrowe/docker-pihole-unbound
+			
+			Media:
+				Radarr: https://hub.docker.com/r/linuxserver/radarr
+				Jellyfin: https://github.com/linuxserver/docker-jellyfin
+				OpenBooks: https://github.com/evan-buss/openbooks
+				Sonarr: https://hub.docker.com/r/linuxserver/sonarr
+			Automation:
+				Home Assistant: https://hub.docker.com/r/linuxserver/homeassistant
+				https://github.com/deconz-community/deconz-docker
+				
+			rsync - backups over SSH
+			
+			Prometheus with fluentd for logging and monitoring - Graphite
+			
+			- Setup SendMail
+
+Optional:
+
+watchtower - update containers automatically
+self-hosted Heroku https://caprover.com/
+redis for KV store
+minio s3 cluster for files https://min.io/ 70 | 30
+AwesomeSelfHosted github https://github.com/awesome-selfhosted/awesome-selfhosted
+TrueNAS Scale (maybe)
+	-> Next Cloud: https://hub.docker.com/_/nextcloud
+		-> https://i.imgur.com/4Pp7dRg.jpg
+	-> iCSI
+	-> Photoprism: https://hub.docker.com/r/photoprism/photoprism
+	-> Bitwarden: https://github.com/dani-garcia/vaultwarden
+	
+Security:
+All of the below on the Ubuntu-server and Windows Server VM's - only apply what it required to the host server
+SSH:
+	-> use public-key authentication
+	-> lock the access for the root user
+	-> change SSH away from the default port (if possible)
+Ports:
+	-> Close all ports except for:
+		-> HTTPS, SSH, and all absolutely necessary ports (open-as-needed)
+		-> can use Firewalld, UFW, IPTables or whichever you prefer
+Access:
+	-> Use reverse proxy
+		-> SWAG (Secure Web Application Gateway)
+			- or - 
+		-> Traefik
+	-> Use cloudflare Proxy for webservices
+		-> Use cloudflare-ddns by oznu to update
+		-> if not possible use DDCLIENT
+		- or - 
+		- > use cloudflare wildcard certs and proxy with Traefik
+		-> Use cloudflare-ddns by oznu to update IP for zones
+	-> Enable Single-sign-on
+		-> (Athelia)
+	- get minimal implementation containers
+	- Segment the network (Subnetting and VLANS)
+	- block all requests from Russia, China, Ukraine, Crimea, and North Korea
+	- build conditional port forward that only allows access from cloudflares IP ranges
+	- properly setup fail2ban on Ubuntu server
+linuxserver.io

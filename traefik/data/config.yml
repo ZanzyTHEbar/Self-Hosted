@@ -6,7 +6,7 @@ http:
         - "https"
       rule: "Host(`proxmox.prometheontechnologies.com`)"
       middlewares:
-        #- auth
+        - auth
         - frame-deny
         - default-headers
         - https-redirectscheme
@@ -218,7 +218,9 @@ http:
   middlewares:
     auth:
       forwardauth:
-        address: ""
+        address: "https://auth.prometheontechnologis.com:4181"
+        trustForwardHeader: true
+        authResponseHeaders: "X-Forwarded-User"
     addprefix-pihole:
       addPrefix:
         prefix: "/admin"
