@@ -6,7 +6,7 @@ http:
         - "https"
       rule: "Host(`proxmox.prometheontechnologies.com`)"
       middlewares:
-        - auth
+#        - auth
         - frame-deny
         - default-headers
         - https-redirectscheme
