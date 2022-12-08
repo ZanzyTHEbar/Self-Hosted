@@ -1,0 +1,49 @@
+version: '3.3'
+services:
+  nextcloud_db:
+    container_name: nextcloud_db
+    image: mariadb
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW --innodb-file-per-table=1 --skip-innodb-read-only-compressed
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - proxy
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+  nextcloud:
+    container_name: nextcloud
+    image: lscr.io/linuxserver/nextcloud
+    restart: always
+    ports:
+      - 444:443
+    links:
+      - nextcloud_db
+    volumes:
+      - ./appdata:/config
+      - ./data:/data
+    networks:
+      - proxy
+    environment:
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${MYSQL_HOST}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.entrypoints=http"
+      - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.${DOMAIN}`)"
+      - "traefik.http.middlewares.nextcloud-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.nextcloud.middlewares=nextcloud-https-redirect"
+      - "traefik.http.routers.nextcloud-secure.entrypoints=https"
+      - "traefik.http.routers.nextcloud-secure.rule=Host(`nextcloud.${DOMAIN}`)"
+      - "traefik.http.routers.nextcloud-secure.tls=true"
+      - "traefik.http.routers.nextcloud-secure.service=nextcloud"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=3002"
+      - "traefik.docker.network=proxy"
+networks:
+  proxy:
+    external: true
