@@ -4,6 +4,4 @@ database
 /mykuma/uptime-kuma-data
 /traefik/data/auth
 /traefik/data/acme.json
-/nextcloud/data
-/nextcloud/appdata
-/nextcloud/mysql
+/nextcloud/files
