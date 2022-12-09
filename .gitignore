@@ -5,3 +5,5 @@ database
 /traefik/data/auth
 /traefik/data/acme.json
 /nextcloud/files
+/nextcloud/nextcloud
+/nextcloud/mysql-data
