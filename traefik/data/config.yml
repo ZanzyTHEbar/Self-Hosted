@@ -11,7 +11,88 @@ http:
         - https-redirectscheme
       tls: {}
       service: proxmox
-    #pihole:
+#endregion
+#region services
+  services:
+    proxmox:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.0.100:8006"
+        passHostHeader: true
+#endregion
+  middlewares:
+    #forward-auth:
+    #  forwardauth:
+    #    address: "https://auth.prometheontechnologis.com:4181"
+    #    trustForwardHeader: true
+    #    authResponseHeaders: "X-Forwarded-User"
+    addprefix-pihole:
+      addPrefix:
+        prefix: "/admin"
+    https-redirectscheme:
+      redirectScheme:
+        scheme: https
+        permanent: true
+    nc-rep:
+      redirectRegex:
+        regex: "https://(.*)/.well-known/(card|cal)dav"
+        replacement: "https://$1/remote.php/dav/"
+        permanent: true
+    nc-header:
+      headers:
+        sslRedirect: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 315360000
+        referrerPolicy: "same-origin"
+        browserXssFilter: true
+        contentTypeNosniff: true
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+        customResponseHeaders:
+          X-Robots-Tag: "none"
+        customFrameOptionsValue: "SAMEORIGIN"
+    frame-deny:
+      headers:
+        frameDeny: true
+        customFrameOptionsValue: SAMEORIGIN
+    default-headers:
+      headers:
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+    idrac:
+      headers:
+        frameDeny: true
+        browserXssFilter: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+    gzip:
+      compress: {}
+    default-whitelist:
+      ipWhiteList:
+        sourceRange:
+        - "10.0.0.0/8"
+        - "192.168.0.0/16"
+        - "172.16.0.0/12"
+    secured:
+      chain:
+        middlewares:
+        - default-whitelist
+        - default-headers
+        - frame-deny
+
+
+#pihole:
     #  entryPoints:
     #    - "https"
     #  rule: "Host(`pihole.prometheontechnologies.com`)"
@@ -145,15 +226,7 @@ http:
     #  tls: {}
     #  service: pterodactyl
 
-#endregion
-#region services
-  services:
-    proxmox:
-      loadBalancer:
-        servers:
-          - url: "https://192.168.0.100:8006"
-        passHostHeader: true
-    #pihole:
+#pihole:
     #  loadBalancer:
     #    servers:
     #      - url: "http://192.168.0.101:80"
@@ -213,55 +286,3 @@ http:
     #    servers:
     #      - url: "http://192.168.0.110:80"
     #    passHostHeader: true
-#endregion
-  middlewares:
-    #forward-auth:
-    #  forwardauth:
-    #    address: "https://auth.prometheontechnologis.com:4181"
-    #    trustForwardHeader: true
-    #    authResponseHeaders: "X-Forwarded-User"
-    addprefix-pihole:
-      addPrefix:
-        prefix: "/admin"
-    https-redirectscheme:
-      redirectScheme:
-        scheme: https
-        permanent: true
-    frame-deny:
-      headers:
-        frameDeny: true
-        customFrameOptionsValue: SAMEORIGIN
-    default-headers:
-      headers:
-        browserXssFilter: true
-        contentTypeNosniff: true
-        forceSTSHeader: true
-        stsIncludeSubdomains: true
-        stsPreload: true
-        stsSeconds: 15552000
-        customRequestHeaders:
-          X-Forwarded-Proto: https
-    idrac:
-      headers:
-        frameDeny: true
-        browserXssFilter: true
-        forceSTSHeader: true
-        stsIncludeSubdomains: true
-        stsSeconds: 15552000
-        customFrameOptionsValue: SAMEORIGIN
-        customRequestHeaders:
-          X-Forwarded-Proto: https
-    gzip:
-      compress: {}
-    default-whitelist:
-      ipWhiteList:
-        sourceRange:
-        - "10.0.0.0/8"
-        - "192.168.0.0/16"
-        - "172.16.0.0/12"
-    secured:
-      chain:
-        middlewares:
-        - default-whitelist
-        - default-headers
-        - frame-deny
