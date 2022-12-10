@@ -36,8 +36,7 @@ ProxMox:
 	
 	Ubuntu Server:
 		Ansible!!!
-		Dashy - docker container (Doesn't currently work with Traefik - went with Homer isntead)
-		
+		Dashy - docker container (Doesn't currently work with Traefik - went with Homer instead)
 			Services:
 				MergerFS
 				SnapRAID
@@ -47,12 +46,10 @@ ProxMox:
 				Photoprism: https://hub.docker.com/r/photoprism/photoprism
 				Bitwarden: https://github.com/dani-garcia/vaultwarden
 				Transmission
-				
 			System:
 				Jackett: https://hub.docker.com/r/linuxserver/jackett
 				PiKVM: https://github.com/pikvm/pikvm
 				PiHole: https://github.com/chriscrowe/docker-pihole-unbound
-			
 			Media:
 				Radarr: https://hub.docker.com/r/linuxserver/radarr
 				Jellyfin: https://github.com/linuxserver/docker-jellyfin
@@ -76,7 +73,7 @@ redis for KV store
 minio s3 cluster for files https://min.io/ 70 | 30
 AwesomeSelfHosted github https://github.com/awesome-selfhosted/awesome-selfhosted
 TrueNAS Scale (maybe)
-	-> Next Cloud: https://hub.docker.com/_/nextcloud
+	-> NextCloud: https://hub.docker.com/_/nextcloud
 		-> https://i.imgur.com/4Pp7dRg.jpg
 	-> iCSI
 	-> Photoprism: https://hub.docker.com/r/photoprism/photoprism

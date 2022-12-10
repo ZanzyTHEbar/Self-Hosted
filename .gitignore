@@ -7,3 +7,4 @@ database
 /nextcloud/files
 /nextcloud/nextcloud
 /nextcloud/mysql-data
+/homer/data

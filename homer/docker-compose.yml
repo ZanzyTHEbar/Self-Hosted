@@ -10,24 +10,24 @@ services:
       - ./data:/www/assets
       - ./data/icons:/www/assets/icons
     labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
+      traefik.enable: true
+      traefik.docker.network: proxy
       # Define the URL to access this app
-      - "traefik.http.routers.homer.rule=Host(`dashboard.${DOMAIN}`)"
-      - "traefik.http.routers.homer.entrypoints=http"
-      - "traefik.http.services.homer.loadbalancer.server.port=8080"
+      traefik.http.routers.homer.rule: Host(`${SUB_DOMAIN}.${DOMAIN}`)
+      traefik.http.routers.homer.entrypoints: http
+      traefik.http.services.homer.loadbalancer.server.port: 8080
       # TLS is used to protect the domain
-      - "traefik.http.routers.homer-secure.entrypoints=https"
-      - "traefik.http.middlewares.homer-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.homer.middlewares=homer-https-redirect"
-      - "traefik.http.routers.homer-secure.service=homer"
-      - "traefik.http.routers.homer-secure.rule=Host(`dashboard.${DOMAIN}`)"
-      - "traefik.http.routers.homer-secure.tls=true"
+      traefik.http.routers.homer-secure.entrypoints: https
+      traefik.http.middlewares.homer-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.homer.middlewares: homer-https-redirect
+      traefik.http.routers.homer-secure.service: homer
+      traefik.http.routers.homer-secure.rule: Host(`${SUB_DOMAIN}.${DOMAIN}`)
+      traefik.http.routers.homer-secure.tls: true
       
     environment:
-      - INIT_ASSETS=0
-      - USER="${USER}"
-      - GROUP="${GROUP}"
+      INIT_ASSETS: 0
+      USER: ${USER}
+      GROUP: ${GROUP}
     restart: unless-stopped
     networks:
       - proxy
