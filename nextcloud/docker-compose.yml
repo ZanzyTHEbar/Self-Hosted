@@ -1,22 +1,5 @@
 version: '3.7'
 services:
-    nextcloud-db:
-        image: mariadb:latest
-        container_name: nextcloud-db
-        command: --transaction-isolation=READ-COMMITTED --log-bin=ROW --skip-innodb-read-only-compressed
-        restart: unless-stopped
-        security_opt:
-          - no-new-privileges:true
-        volumes:
-            - ./mysql-data:/var/lib/mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # MYSQL ROOT PASSWORD
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD} # PASSWORD OF MYSQL USER
-            MYSQL_DATABASE: ${MYSQL_DATABASE} # MYSQL DATABASE
-            MYSQL_USER: ${MYSQL_USER} # MYSQL USERNAME
-        networks:
-            - default
-
     nextcloud-redis:
         image: redis:alpine
         container_name: nextcloud-redis
@@ -29,26 +12,24 @@ services:
             - default
     
     nextcloud-app:
-        image: nextcloud
+        image: lscr.io/linuxserver/nextcloud:latest #nextcloud
         container_name: nextcloud-app
         restart: unless-stopped
         security_opt:
           - no-new-privileges:true
         depends_on:
-            - nextcloud-db
             - nextcloud-redis
         environment:
             REDIS_HOST: ${REDIS_HOST}
             REDIS_HOST_PASSWORD: ${REDIS_HOST_PASSWORD} # REPLACE WITH REDIS PASSWORD
-            MYSQL_HOST: ${MYSQL_HOST}
-            MYSQL_USER: ${MYSQL_USER} # MYSQL USERNAME
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD} # PASSWORD OF MYSQL USER
-            MYSQL_DATABASE: ${MYSQL_DATABASE} # MYSQL DATABASE
+            PUID: 1000
+            PGID: 1000
+            TZ: Europe/London
         volumes:
-            - ./nextcloud:/var/www/html
+            - ./data:/data
+            - ./config:/config
         ports:
             - 4443:443
-            - 4444:80
         labels:
             traefik.enable: true
             traefik.docker.network: proxy
@@ -57,8 +38,8 @@ services:
             traefik.http.routers.nextcloud-secure.entrypoints: https
             traefik.http.routers.nextcloud-secure.tls: true
             traefik.http.routers.nextcloud-secure.rule: Host(`cloud.${DOMAIN}`)
-            traefik.http.routers.nextcloud.middlewares: nc-rep, nc-header
-            traefik.http.routers.nextcloud-secure.middlewares: nc-header, https-redirect
+            traefik.http.routers.nextcloud.middlewares: nc-rep, nc-header, https-redirect
+            traefik.http.routers.nextcloud-secure.middlewares: nc-header
             traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
             traefik.http.middlewares.nc-rep.redirectRegex.permanent: 'true'
             traefik.http.middlewares.nc-rep.redirectRegex.regex: https://(.*)/.well-known/(card|cal)dav

@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
   homer:
     image: b4bz/homer
@@ -18,12 +18,17 @@ services:
       traefik.http.services.homer.loadbalancer.server.port: 8080
       # TLS is used to protect the domain
       traefik.http.routers.homer-secure.entrypoints: https
+      # Define Headers
+      traefik.http.middlewares.homer-headers.headers.customrequestheaders.X-Forwarded-Proto: https
+      traefik.http.middlewares.homer-headers.headers.customrequestheaders.Access-Control-Allow-Origin: "*"
+      traefik.http.middlewares.homer-headers.headers.customrequestheaders.Access-Control-Allow-Headers: "*"
+      traefik.http.middlewares.homer-headers.headers.customrequestheaders.Access-Control-Allow-Credentials: "true"
+      traefik.http.middlewares.homer-headers.headers.customrequestheaders.Access-Control-Allow-Methods: "GET, POST, OPTIONS"
       traefik.http.middlewares.homer-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.homer.middlewares: homer-https-redirect
+      traefik.http.routers.homer.middlewares: homer-https-redirect, homer-headers
       traefik.http.routers.homer-secure.service: homer
       traefik.http.routers.homer-secure.rule: Host(`${SUB_DOMAIN}.${DOMAIN}`)
       traefik.http.routers.homer-secure.tls: true
-      
     environment:
       INIT_ASSETS: 0
       USER: ${USER}

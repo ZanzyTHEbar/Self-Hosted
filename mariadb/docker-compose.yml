@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  nextcloud-db:
+        image: mariadb:latest
+        container_name: nextcloud-db
+        command: --transaction-isolation=READ-COMMITTED --log-bin=ROW --skip-innodb-read-only-compressed
+        restart: unless-stopped
+        security_opt:
+          - no-new-privileges:true
+        volumes:
+            - ./mysql-data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # MYSQL ROOT PASSWORD
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD} # PASSWORD OF MYSQL USER
+            MYSQL_DATABASE: ${MYSQL_DATABASE} # MYSQL DATABASE
+            MYSQL_USER: ${MYSQL_USER} # MYSQL USERNAME
+        networks:
+            - default

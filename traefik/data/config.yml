@@ -66,6 +66,10 @@ http:
         stsSeconds: 15552000
         customRequestHeaders:
           X-Forwarded-Proto: https
+          Access-Control-Allow-Origin: "*"
+          Access-Control-Allow-Headers: "*"
+          Access-Control-Allow-Credentials: "true"
+          Access-Control-Allow-Methods: "GET, POST, OPTIONS"
     idrac:
       headers:
         frameDeny: true
