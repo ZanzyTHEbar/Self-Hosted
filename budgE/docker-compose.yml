@@ -1,0 +1,46 @@
+---
+version: "3.7"
+services:
+  budgE:
+    image: lscr.io/linuxserver/budge:latest
+    container_name: budgE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/London
+    volumes:
+      - ./config:/config
+    ports:
+      - 8044:80
+      - 4444:443
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.docker.network: proxy
+      traefik.http.routers.budgE.entrypoints: http
+      traefik.http.routers.budgE.rule: Host(`finance.${DOMAIN}`)
+      traefik.http.routers.budgE-secure.entrypoints: https
+      traefik.http.routers.budgE-secure.tls: true
+      traefik.http.routers.budgE-secure.rule: Host(`finance.${DOMAIN}`)
+      traefik.http.routers.budgE.middlewares: nc-rep, budge-header, https-redirect
+      traefik.http.routers.budgE-secure.middlewares: budge-header
+      traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
+      traefik.http.middlewares.budge-header.headers.frameDeny: true
+      traefik.http.middlewares.budge-header.headers.sslRedirect: true
+      traefik.http.middlewares.budge-header.headers.contentTypeNosniff: true
+      traefik.http.middlewares.budge-header.headers.stsIncludeSubdomains: true
+      traefik.http.middlewares.budge-header.headers.stsPreload: true
+      traefik.http.middlewares.budge-header.headers.stsSeconds: 31536000
+      traefik.http.middlewares.budge-header.headers.referrerPolicy: same-origin
+      traefik.http.middlewares.budge-header.headers.browserXssFilter: true
+      traefik.http.middlewares.budge-header.headers.customRequestHeaders.X-Forwarded-Proto: https
+      traefik.http.middlewares.budge-header.headers.customResponseHeaders.X-Robots-Tag: none
+      traefik.http.middlewares.budge-header.headers.customFrameOptionsValue: SAMEORIGIN
+      traefik.http.routers.budgE-secure.service: budgE
+      traefik.http.services.budgE.loadbalancer.server.port: 80
+      traefik.http.services.budgE.loadbalancer.passHostHeader: true
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true

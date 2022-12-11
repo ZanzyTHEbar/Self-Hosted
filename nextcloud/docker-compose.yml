@@ -43,8 +43,8 @@ services:
             traefik.http.routers.nextcloud-secure.middlewares: nc-header
             traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
             traefik.http.middlewares.nc-rep.redirectRegex.permanent: 'true'
-            traefik.http.middlewares.nc-rep.redirectRegex.regex: https://(.*)/.well-known/(card|cal)dav
-            traefik.http.middlewares.nc-rep.redirectRegex.replacement: https://$$1/remote.php/dav/
+            traefik.http.middlewares.nc-rep.redirectRegex.regex: https://(.*)/nextcloud/.well-known/(card|cal)dav
+            traefik.http.middlewares.nc-rep.redirectRegex.replacement: https://$$1/nextcloud/remote.php/dav/
             traefik.http.middlewares.nc-header.headers.frameDeny: true
             traefik.http.middlewares.nc-header.headers.sslRedirect: true
             traefik.http.middlewares.nc-header.headers.contentTypeNosniff: true
