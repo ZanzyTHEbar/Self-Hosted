@@ -15,4 +15,8 @@ services:
             MYSQL_DATABASE: ${MYSQL_DATABASE} # MYSQL DATABASE
             MYSQL_USER: ${MYSQL_USER} # MYSQL USERNAME
         networks:
-            - default
+            - database
+
+networks:
+  database:
+    external: true

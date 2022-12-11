@@ -10,6 +10,7 @@ services:
         command: redis-server --requirepass ${REDIS_HOST_PASSWORD} # REPLACE WITH REDIS PASSWORD
         networks:
             - default
+            - database
     
     nextcloud-app:
         image: lscr.io/linuxserver/nextcloud:latest #nextcloud
@@ -61,7 +62,10 @@ services:
         networks:
             - proxy
             - default
+            - database
 
 networks:
   proxy:
+    external: true
+  database:
     external: true
