@@ -26,6 +26,7 @@ services:
             PUID: 1000
             PGID: 1000
             TZ: Europe/London
+            #DOCKER_MODS: linuxserver/mods:nextcloud-mediadc
         volumes:
             - ./data:/data
             - ./config:/config
@@ -39,12 +40,15 @@ services:
             traefik.http.routers.nextcloud-secure.entrypoints: https
             traefik.http.routers.nextcloud-secure.tls: true
             traefik.http.routers.nextcloud-secure.rule: Host(`cloud.${DOMAIN}`)
-            traefik.http.routers.nextcloud.middlewares: nc-rep, nc-header, https-redirect
-            traefik.http.routers.nextcloud-secure.middlewares: nc-header
+            traefik.http.routers.nextcloud.middlewares: nc-rep, nc-header, nc-rep2, https-redirect
+            traefik.http.routers.nextcloud-secure.middlewares: nc-header, nc-rep, nc-rep2
             traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
             traefik.http.middlewares.nc-rep.redirectRegex.permanent: 'true'
-            traefik.http.middlewares.nc-rep.redirectRegex.regex: https://(.*)/nextcloud/.well-known/(card|cal)dav
-            traefik.http.middlewares.nc-rep.redirectRegex.replacement: https://$$1/nextcloud/remote.php/dav/
+            traefik.http.middlewares.nc-rep.redirectRegex.regex: https://(.*)/.well-known/(card|cal)dav
+            traefik.http.middlewares.nc-rep.redirectRegex.replacement: https://$${1}/remote.php/dav/
+            traefik.http.middlewares.nc-rep2.redirectRegex.permanent: 'true'
+            traefik.http.middlewares.nc-rep2.redirectRegex.regex: https?://([^/]*)(/.well-known[^#]*)
+            traefik.http.middlewares.nc-rep2.redirectRegex.replacement: https://$${1}/index.php$${2}
             traefik.http.middlewares.nc-header.headers.frameDeny: true
             traefik.http.middlewares.nc-header.headers.sslRedirect: true
             traefik.http.middlewares.nc-header.headers.contentTypeNosniff: true
