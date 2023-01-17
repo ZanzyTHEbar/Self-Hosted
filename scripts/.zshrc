@@ -149,4 +149,5 @@ source ~/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/zsh/.p10k.zsh
 [[ ! -f ~/zsh/.p10k.zsh ]] || source ~/zsh/.p10k.zsh
+# comment this out if you want to use the wizard
 POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
