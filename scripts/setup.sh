@@ -11,9 +11,22 @@ sudo apt-get update && sudo apt-get upgrade -y
 # install powerline fonts
 # install powerlevel9k
 # install tmux
-sudo apt-get install -y autojump git-core curl zsh tmux fonts-powerline powerlevel9k && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+sudo apt-get install -y autojump git-core curl zsh tmux fonts-powerline && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-#call the install_docker.sh script
+# setup zsh
+mkdir ~/zsh
+# install powerlevel10k theme
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+# copy .zshrc to home directory
+cp .zshrc ~/
+# copy .p10k.zsh to /home/zsh directory
+cp .p10k.zsh ~/zsh
+# copy aliasrc to /home/zsh directory
+cp aliasrc ~/zsh
+# copy .tmux.conf to home directory
+cp .tmux.conf ~/
+
+# call the install_docker.sh script
 ./install_docker.sh
 
 # create .env files for docker-compose services
