@@ -9,7 +9,6 @@ sudo apt-get update && sudo apt-get upgrade -y
 # install zsh
 # install oh-my-zsh
 # install powerline fonts
-# install powerlevel9k
 # install tmux
 sudo apt-get install -y autojump git-core curl zsh tmux fonts-powerline && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 

@@ -16,8 +16,8 @@ services:
         image: lscr.io/linuxserver/nextcloud:latest #nextcloud
         container_name: nextcloud-app
         restart: unless-stopped
-        security_opt:
-          - no-new-privileges:true
+        #security_opt:
+        #  - no-new-privileges:true
         depends_on:
             - nextcloud-redis
         environment:
@@ -30,6 +30,10 @@ services:
         volumes:
             - ./data:/data
             - ./config:/config
+            - ~/mnt/pool/:/mnt/pool:rw
+            - ~/mnt/disk1/:/mnt/disk1:rw
+            - ~/mnt/disk2/:/mnt/disk2:rw
+            - ~/mnt/disk3/:/mnt/disk3:rw
         ports:
             - 4443:443
         labels:
