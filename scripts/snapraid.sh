@@ -1,0 +1,2 @@
+snapraid sync
+snapraid scrub
