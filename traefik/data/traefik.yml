@@ -1,4 +1,10 @@
-
+log:
+  level: DEBUG # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: json
+  filePath: /logs/traefik.log
+accessLog:
+  format: json
+  filePath: /logs/access.log
 api:
   dashboard: true
   debug: true
