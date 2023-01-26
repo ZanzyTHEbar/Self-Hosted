@@ -30,10 +30,10 @@ services:
         volumes:
             - ./data:/data
             - ./config:/config
-            - ~/mnt/pool/:/pool:rw
-            - ~/mnt/disk1/:/disk1:rw
-            - ~/mnt/disk2/:/disk2:rw
-            - ~/mnt/disk3/:/disk3:rw
+            - ~/mnt/pool/:/mnt/pool:rw
+            #- ~/mnt/disk1/:/disk1:rw
+            #- ~/mnt/disk2/:/disk2:rw
+            #- ~/mnt/disk3/:/disk3:rw
         ports:
             - 4443:443
         labels:
