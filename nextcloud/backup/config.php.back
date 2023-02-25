@@ -1,0 +1,71 @@
+<?php
+$CONFIG = array (
+  'memcache.local' => '\\OC\\Memcache\\APCu',
+  'memcache.distributed' => '\\OC\\Memcache\\Redis',
+  'memcache.locking' => '\\OC\\Memcache\\Redis',
+  'redis' => 
+  array (
+    'host' => 'nextcloud-redis',
+    'password' => 'redis',
+    'port' => 6379,
+  ),
+  'datadirectory' => '/data',
+  'instanceid' => 'ocp6j6xrc8s1',
+  'passwordsalt' => 'dbcYKiuWTNIw+eFESMlkg2RoKyt5qT',
+  'secret' => 'CNluD3/RvhTjJyOsHI+y+U1tbDSmbC8yBNsg0LBTF8OrKH6B',
+  'trusted_domains' => 
+  array (
+    0 => 'cloud.prometheontechnologies.com',
+    1 => '192.168.0.204:4443',
+  ),
+  'overwriteprotocol' => 'https',
+  'dbtype' => 'mysql',
+  'version' => '25.0.3.2',
+  'overwrite.cli.url' => 'http://cloud.prometheontechnologies.com',
+  'dbname' => 'nextclouddb',
+  'dbhost' => 'nextcloud-db:3306',
+  'dbport' => '',
+  'dbtableprefix' => 'oc_',
+  'mysql.utf8mb4' => true,
+  'dbuser' => 'oc_meraki',
+  'dbpassword' => '6rCa>?qUJl6l9oe@,aZevi[m99L;!i',
+  'installed' => true,
+  'twofactor_enforced' => 'true',
+  'twofactor_enforced_groups' => 
+  array (
+    0 => 'admin',
+    1 => 'WorkspacesManagers',
+    2 => 'GeneralManager',
+  ),
+  'twofactor_enforced_excluded_groups' => 
+  array (
+  ),
+  'trusted_proxies' => 
+  array (
+    0 => '192.168.0.204',
+  ),
+  'default_phone_region' => 'BE',
+  'app_install_overwrite' => 
+  array (
+    0 => 'files_external_onedrive',
+    1 => 'printer',
+    2 => 'dropit',
+    3 => 'duplicatefinder',
+    4 => 'sharepoint',
+    5 => 'sharepermissions',
+    6 => 'workspace',
+    7 => 'integration_whiteboard',
+  ),
+  'ldapProviderFactory' => 'OCA\\User_LDAP\\LDAPProviderFactory',
+  'maintenance' => false,
+  'loglevel' => 0,
+  'theme' => '',
+  'mail_from_address' => 'info',
+  'mail_smtpmode' => 'smtp',
+  'mail_sendmailmode' => 'smtp',
+  'mail_domain' => 'prometheontechnologies.com',
+  'mail_smtpsecure' => 'tls',
+  'mail_smtphost' => 'smtp.office365.com',
+  'mail_smtpport' => '587',
+  'bulkupload.enabled' => false,
+);

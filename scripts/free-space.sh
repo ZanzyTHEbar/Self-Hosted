@@ -4,4 +4,6 @@
 # if no param is passed, default to /
 path=${1:-/}
 
-sudo du -cha --max-depth=1 $path | grep -E "^[0-9\.]*[MG]"
+size=${2:-MG}
+
+sudo du -cha --max-depth=1 $path | grep -E "^[0-9\.]*[$size]"
