@@ -1,3 +1,5 @@
+source <(fzf --zsh)
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -21,11 +23,12 @@ autoload -U colors && colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# If you come from bash you might have to change your $PATH.
 # Path to your oh-my-zsh installation.
+export PATH="$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH"
 export ZSH="$HOME/.oh-my-zsh"
+export PATH="$PATH:/usr/local/go/bin"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -93,7 +96,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting autojump)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -142,12 +145,14 @@ bindkey '^ ' autosuggest-accept
 [ -f "$HOME/zsh/aliasrc" ] && source "$HOME/zsh/aliasrc"
 
 # Load ; should be last.
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
-source /usr/share/autojump/autojump.zsh 2>/dev/null
 source ~/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.local/share/icons-in-terminal/icons_bash.sh
 
 # To customize prompt, run `p10k configure` or edit ~/zsh/.p10k.zsh
 [[ ! -f ~/zsh/.p10k.zsh ]] || source ~/zsh/.p10k.zsh
 # comment this out if you want to use the wizard
 POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
